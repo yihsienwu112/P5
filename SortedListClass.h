@@ -21,7 +21,6 @@ public:
     //Copy constructor: makes a complete copy of its parameter.
     ~SortedListClass();
     //Destructor: free up any dynamically allocated memory.
-        // SortedListClass& operator=(const SortedListClass &rhs);
     //Assignment operator: makes a complete copy of its parameter.
     void clear();
     //Clears the list to an empty state without resulting in any memory leaks
@@ -38,7 +37,7 @@ public:
     //Remove the last item from the list and return its value
     int getNumElems() const;
     //Counts and returns the number of nodes in the list.
-    bool getElemAtIndex(const int index, T &outVal) const;
+    bool getElemAtIndex(const int index, T &outVal, void *pVoid) const;
     //Retrieves the value at the specified index in the list.
 
 };

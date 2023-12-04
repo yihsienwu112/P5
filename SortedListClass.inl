@@ -11,21 +11,17 @@ using namespace std;
 //it contains a collection //contains one element
 
 template <class T>
-SortedListClass<T>::SortedListClass(){
-    head = 0;
-    tail = 0;
-}
+SortedListClass<T>::SortedListClass() : head(0), tail(0){}
 
 template <class T>
 SortedListClass<T>::SortedListClass(const SortedListClass<T> &rhs){
-    head = 0;
-    tail = 0;
-    LinkedNodeClass<T> *nodePtr = rhs.head;
-    while(nodePtr != 0){
-        int valToInsert = nodePtr->getValue();
-        this->insertValue(valToInsert); //insert the value from rhs
-        //function insertValue will help us create new pointers to make a copy
-        nodePtr = nodePtr->getNext();
+    // Implement copy constructor logic here
+    // Make a deep copy of the linked list
+    head = tail = 0;
+    LinkedNodeClass<T> *tempNode = rhs.head;
+    while(tempNode != 0){
+        insertValue(tempNode->getValue());
+        tempNode = tempNode->getNext();
     }
 }
 
@@ -36,180 +32,147 @@ SortedListClass<T>::~SortedListClass(){
 
 template <class T>
 void SortedListClass<T>::clear(){
-    LinkedNodeClass<T> *nodePtr;
-    LinkedNodeClass<T> *clearPtr;
-    nodePtr = head;
-    clearPtr = head;
-    while(nodePtr != 0){
-        nodePtr = nodePtr->getNext();
-        delete clearPtr;
-        clearPtr = nodePtr;
+    LinkedNodeClass<T> *tempNode;
+    while (head != 0) {
+        tempNode = head;
+        head = head->getNext();
+        delete tempNode;
     }
-    head = 0;
     tail = 0;
 }
 
-template <class T>
-void SortedListClass<T>::insertValue(const T &valToInsert){
-    LinkedNodeClass<T> *insertPtr;
+template<class T>
+void SortedListClass<T>::insertValue(const T &valToInsert) {
+    if (head == 0) {
+        // List is empty
+        LinkedNodeClass<T> *newNode = new LinkedNodeClass<T>(0, valToInsert, 0);
+        head = tail = newNode;
+    } else {
+        LinkedNodeClass<T> *current = head;
+        LinkedNodeClass<T> *prev = 0;
 
-    if(head == 0 && tail == 0){
-        insertPtr = new LinkedNodeClass<T>(0, valToInsert, 0);
-        head = insertPtr;
-        tail = insertPtr;
-    }
-
-    else{
-        LinkedNodeClass<T> *nodePtr;
-        nodePtr = head;
-
-        while(nodePtr!=0 && nodePtr->getValue() <= valToInsert){
-            nodePtr = nodePtr->getNext();
+        while (current != 0 && current->getValue() <= valToInsert) {
+            prev = current;
+            current = current->getNext();
         }
 
-        //Insert from front
-        if(nodePtr == head){
-            insertPtr = new LinkedNodeClass<T>(0, valToInsert, head);
-            insertPtr->setBeforeAndAfterPointers();
-            head = insertPtr; //change head to point to where insertPtr is pointing to
+        if (prev == 0) {
+            // Insert at the beginning
+            LinkedNodeClass<T> *newNode = new LinkedNodeClass<T>(0, valToInsert, head);
+            newNode->setBeforeAndAfterPointers();
+            head = newNode;
+        } else if (current == 0) {
+            // Insert at the end
+            LinkedNodeClass<T> *newNode = new LinkedNodeClass<T>(tail, valToInsert, 0);
+            newNode->setBeforeAndAfterPointers();
+            tail = newNode;
+        } else {
+            // Insert in the middle
+            LinkedNodeClass<T> *newNode = new LinkedNodeClass<T>(prev, valToInsert, current);
+            newNode->setBeforeAndAfterPointers();
         }
 
-            //insert from last position
-        else if(nodePtr == 0){ //the last node, so nodePtr would be zero
-            insertPtr = new LinkedNodeClass<T>(tail, valToInsert, 0);
-            insertPtr->setBeforeAndAfterPointers();
-            tail = insertPtr;
-        }
-        else{
-            //insert in the middle
-            insertPtr = new LinkedNodeClass<T>(nodePtr->getPrev(), valToInsert,
-                                               nodePtr);
-            insertPtr->setBeforeAndAfterPointers();
-        }
     }
 }
+
 
 
 template <class T>
 void SortedListClass<T>::printForward() const{
-    LinkedNodeClass<T> *nodePtr;
-    nodePtr = head;
-
-    cout << "Forward List Contents Follow:" << endl;
-
-    while(nodePtr != 0){
-        cout << "  " << nodePtr->getValue() << endl;
-        nodePtr = nodePtr->getNext();
+    std::cout << "Forward List Contents Follow:" << std::endl;
+    LinkedNodeClass<T> *tempNode = head;
+    while (tempNode != 0) {
+        std::cout << "  " << tempNode->getValue() << std::endl;
+        tempNode = tempNode->getNext();
     }
-    cout << "End Of List Contents" << endl;
+    std::cout << "End Of List Contents" << std::endl;
 }
 
 template <class T>
 void SortedListClass<T>::printBackward() const{
-    LinkedNodeClass<T> *nodePtr;
-    nodePtr = tail;
-
-    cout << "Backward List Contents Follow:" << endl;
-
-    while(nodePtr != 0){
-        cout << "  " << nodePtr->getValue() << endl;
-        nodePtr = nodePtr->getPrev();
+    std::cout << "Backward List Contents Follow:" << std::endl;
+    LinkedNodeClass<T> *tempNode = tail;
+    while (tempNode != 0) {
+        std::cout << "  " << tempNode->getValue() << std::endl;
+        tempNode = tempNode->getPrev();
     }
-    cout << "End Of List Contents" << endl;
+    std::cout << "End Of List Contents" << std::endl;
 }
 
 
 template <class T>
 bool SortedListClass<T>::removeFront(T &theVal){
-    bool successfullyReomvedItem;
-    LinkedNodeClass<T> *newHeadPtr;
-
-    //if the list was empty:
-    if(head == 0){    //use head == 0 to represent the list is empty
-        successfullyReomvedItem = false;
+    if (head == 0) {
+        // Empty list
+        return false;
     }
-    else{
-        theVal = head->getValue();
-        newHeadPtr = head->getNext();
-        delete head; //delete the value that head is pointing to
-        head = newHeadPtr;
 
-        //handling condition: last node being deleted
-        if(head != 0){
-            head->setPreviousPointerToNull();
-        }
-        else{
-            tail = 0;
-        }
-        successfullyReomvedItem = true;
+    theVal = head->getValue();
+    LinkedNodeClass<T> *tempNode = head;
+    head = head->getNext();
+
+    if (head == 0) {
+        tail = 0;
+    } else {
+        head->setPreviousPointerToNull();
     }
-    return successfullyReomvedItem;
+
+    delete tempNode;
+    return true;
 }
 
 template <class T>
 bool SortedListClass<T>::removeLast(T &theVal){
-    bool successfullyReomvedItem;
-    LinkedNodeClass<T> *newTailPtr;
-
-    //if the list was empty
-    if(tail == 0){
-        successfullyReomvedItem = false;
+    if (tail == 0) {
+        // Empty list
+        return false;
     }
-    else{
-        theVal = tail->getValue();
-        newTailPtr = tail->getPrev();
-        delete tail;
-        tail = newTailPtr;
 
-        //handling condition: last node being deleted
-        if(tail != 0){
-            tail->setNextPointerToNull();
-        }
-        else{
-            head = 0;
-        }
-        successfullyReomvedItem = true;
+    theVal = tail->getValue();
+    LinkedNodeClass<T> *tempNode = tail;
+    tail = tail->getPrev();
+
+    if (tail == 0) {
+        head = 0;
+    } else {
+        tail->setNextPointerToNull();
     }
-    return successfullyReomvedItem;
+
+    delete tempNode;
+    return true;
 }
 
 
 template <class T>
 int SortedListClass<T>::getNumElems() const{
-    LinkedNodeClass<T> *countPtr;
-    int numberOfNodes = 0;
-
-    countPtr = head;
-    while(countPtr != 0){
-        numberOfNodes++;
-        countPtr = countPtr->getNext();
+    int count = 0;
+    LinkedNodeClass<T> *tempNode = head;
+    while (tempNode != 0) {
+        count++;
+        tempNode = tempNode->getNext();
     }
-    return numberOfNodes;
+    return count;
 }
 
 
 template <class T>
-bool SortedListClass<T>::getElemAtIndex(const int index, T &outVal) const{
-    bool successfullyGetIndex;
-    if(index >= getNumElems()){
-        successfullyGetIndex = false;
+bool SortedListClass<T>::getElemAtIndex(const int index, T &outVal, void *pVoid) const{
+    if (index < 0) {
+        return false;
     }
-    else if(index < 0){
-        successfullyGetIndex = false;
+
+    LinkedNodeClass<T> *tempNode = head;
+    int numIndex = 0;
+
+    while (tempNode != pVoid && numIndex < index) {
+        tempNode = tempNode->getNext();
+        numIndex++;
     }
-    else{
-        int numberOfIndex = 0;
-        LinkedNodeClass<T> *indexPtr;
-        indexPtr = head; //point to where head is pointing to
-        while(indexPtr != 0){
-            if(numberOfIndex == index){
-                outVal = indexPtr->getValue();
-                successfullyGetIndex = true;
-                return successfullyGetIndex;
-            }
-            numberOfIndex++;
-            indexPtr = indexPtr->getNext();
-        }
+
+    if (tempNode == pVoid) {
+        return false;
     }
-    return successfullyGetIndex;
+
+    outVal = tempNode->getValue();
+    return true;
 }

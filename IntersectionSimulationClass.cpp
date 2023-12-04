@@ -188,7 +188,7 @@ void IntersectionSimulationClass::printParameters() const
   }
   cout << "===== End Simulation Parameters =====" << endl;
 }
-
+// our code start from here...
 void IntersectionSimulationClass::scheduleArrival(
      const string &travelDir
      )
@@ -428,7 +428,7 @@ bool IntersectionSimulationClass::handleNextEvent(
             while((eastQueue.getNumElems() != 0) && (numAdvancedEast <
                                                      eastWestYellowTime) && (ifStopAtYellowEast == NOT_STOP)){
                 int passValue = getUniform(1, 100);
-                if(passValue > percentCarsAdvanceOnYellow){
+                if(passValue >= percentCarsAdvanceOnYellow){
                     cout << "  Next east-bound car will NOT advance on yellow" << endl;
                     ifStopAtYellowEast = STOP_WHEN_YELLOW;
                 }
@@ -450,7 +450,7 @@ bool IntersectionSimulationClass::handleNextEvent(
             while((westQueue.getNumElems() != 0) && (numAdvancedWest <
                                                      eastWestYellowTime) && (ifStopAtYellowWest == NOT_STOP)){
                 int passValue = getUniform(1, 100);
-                if(passValue > percentCarsAdvanceOnYellow){
+                if(passValue >= percentCarsAdvanceOnYellow){
                     cout << "  Next west-bound car will NOT advance on yellow" << endl;
                     ifStopAtYellowWest = STOP_WHEN_YELLOW;
                 }
@@ -495,7 +495,7 @@ bool IntersectionSimulationClass::handleNextEvent(
             while((northQueue.getNumElems() != 0) && (numAdvancedNorth <
                                                       northSouthYellowTime) && (ifStopAtYellowNorth == NOT_STOP)){
                 int passValue = getUniform(1, 100);
-                if(passValue > percentCarsAdvanceOnYellow){
+                if(passValue >= percentCarsAdvanceOnYellow){
                     cout << "  Next north-bound car will NOT advance on yellow" << endl;
                     ifStopAtYellowNorth = STOP_WHEN_YELLOW;
                 }
@@ -518,7 +518,7 @@ bool IntersectionSimulationClass::handleNextEvent(
             while((southQueue.getNumElems() != 0) && (numAdvancedSouth <
                                                       northSouthYellowTime) && (ifStopAtYellowSouth == NOT_STOP)){
                 int passValue = getUniform(1, 100);
-                if(passValue > percentCarsAdvanceOnYellow){
+                if(passValue >= percentCarsAdvanceOnYellow){
                     cout << "  Next south-bound car will NOT advance on yellow" << endl;
                     ifStopAtYellowSouth = STOP_WHEN_YELLOW;
                 }
