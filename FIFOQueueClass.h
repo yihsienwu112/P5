@@ -8,13 +8,14 @@
 //Purpose: This class is designed to use First In First Out method to
 //         store and retrieve data.
 
+template < class T >
 class FIFOQueueClass
 {
 private:
-    LinkedNodeClass *head;
+    LinkedNodeClass<T> *head;
     //Points to the first node in a queue, or NULL
     //if queue is empty.
-    LinkedNodeClass *tail;
+    LinkedNodeClass<T> *tail;
     //Points to the last node in a queue, or NULL
     //if queue is empty.
 public:
@@ -22,9 +23,9 @@ public:
     //Constructor: initializes both head and tail pointers to 0.
     ~FIFOQueueClass();
     //Destructor: free up any dynamically allocated memory.
-    void enqueue(const int &newItem);
+    void enqueue(const T &newItem);
     //Adds a new node to the end of the queue with the specified value.
-    bool dequeue(int &outItem);
+    bool dequeue(T &outItem);
     //Removes the front node from the queue and retrieves its value.
     void print() const;
     //Prints the values of all nodes in the queue from front to end.
@@ -34,4 +35,5 @@ public:
     //Clears the queue to an empty state without resulting in any memory leaks
 };
 
+#include "FIFOQueueClass.inl"
 #endif

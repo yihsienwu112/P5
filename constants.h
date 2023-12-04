@@ -34,4 +34,9 @@ const int LIGHT_YELLOW_EW = 2;
 const int LIGHT_GREEN_NS = 3;
 const int LIGHT_YELLOW_NS = 4;
 
+
+//Stop At Yellow Light
+const bool NOT_STOP = false;
+const bool STOP_WHEN_YELLOW = true;
+
 #endif //_CONSTANTS_H_

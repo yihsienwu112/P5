@@ -6,26 +6,26 @@
 //LinkedNodeClass Declaration
 //Purpose: This class is designed to store data and pointers to
 //         the next and previous node in a linked list.
-
+template <class T>
 class LinkedNodeClass
 {
 private:
-    LinkedNodeClass *prevNode;
-    int nodeVal;
-    LinkedNodeClass *nextNode;
+    LinkedNodeClass<T> *prevNode;
+    T nodeVal;
+    LinkedNodeClass<T> *nextNode;
 
 public:
 
-    LinkedNodeClass(LinkedNodeClass *inPrev,
-        const int &inVal, LinkedNodeClass *inNext);
+    LinkedNodeClass(LinkedNodeClass<T> *inPrev, const T &inVal,
+                    LinkedNodeClass<T> *inNext);
     //Constructor: Initialize nodeValue to inVal,
 //and prevNode and nextNode to NULL
 
-    int getValue() const;
+    T getValue() const;
     //Returns the value stored within this node.
-    LinkedNodeClass* getNext() const;
+    LinkedNodeClass<T>* getNext() const;
     //returns a pointer to the next node in the linked list.
-    LinkedNodeClass* getPrev() const;
+    LinkedNodeClass<T>* getPrev() const;
     //returns a pointer to the previous node in the linked list.
     void setNextPointerToNull();
     //Sets the nextNode pointer to 0.
@@ -37,7 +37,7 @@ public:
     //Sets the pointers before and after this node to point to this node.
     //Used during insertion.
 };
-
+#include "LinkedNodeClass.inl"
 #endif
 
 

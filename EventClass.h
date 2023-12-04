@@ -58,6 +58,17 @@ class EventClass
       return typeId;
     }
 
+    // Code for template Sortedlist
+    bool operator<=(const EventClass &rhs){
+        return timeOccurs <= rhs.timeOccurs;
+    }
+
+
+    void operator=(const EventClass &rhs) {
+        typeId = rhs.typeId;
+        timeOccurs = rhs.timeOccurs;
+    }
+
     //Remember to implement whichever overloaded operators your
     //SortedListClass needs in order to sort event class objects
     //here!  An event "A" is "less than" an event "B" if
